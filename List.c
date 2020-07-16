@@ -1,5 +1,6 @@
 # include <stdio.h>
 # include <stdlib.h>
+# include <stdbool.h>
 
 typedef struct List List;
 typedef struct List* ListPtr;
@@ -178,6 +179,16 @@ void show(List *l) {
     
 }
 
+// Return TRUE if element is found in the list; otherwise returns FALSE (Linear search)
+bool search(List *l, int element) {
+    
+    for(int i=0; i<l->size; i++) {
+        if(l->arr[i] == element)
+            return true;
+    }
+    return false;
+} 
+
 
 
 
@@ -231,6 +242,12 @@ int main() {
     printf(" %d\n", get(first, 100)); 
     
     show(first);    
+    
+    if(search(first, 200))
+        printf("Element found !");
+    else
+        printf("Element not found !");
+        
     return 0;
 }    
 
