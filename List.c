@@ -16,7 +16,7 @@ List* init() {
     List *l = (List *)malloc(sizeof(List));
     l->arr = (int *)malloc(10*sizeof(int));
     l->size = 0;
-    l->allocated = 10;
+    l->allocated = 10; 
     
     return l;
     
@@ -193,6 +193,7 @@ bool search(List *l, int element) {
 
 // Returns true if the given two lists are equal
 bool isEqual(List *alist, List *blist) {
+    
     if(alist->size == blist->size) {
         for(int i=0; i<alist->size; i++) {
             if(alist->arr[i] != blist->arr[i])
@@ -201,7 +202,23 @@ bool isEqual(List *alist, List *blist) {
         return true;
     }
     return false;
+    
 } 
+
+// Returns a string of all the elements present in the current list
+char* toString(List *l) {
+    
+    char *s = (char *)malloc((l->size*2+15)*10*sizeof(char)); 
+    int index = 0, i = 0;
+    index += sprintf(&s[index],"[");
+    for(; i<l->size-1; i++) {
+        index += sprintf(&s[index], " %d,", l->arr[i]);
+    }
+    index += sprintf(&s[index], " %d ]", l->arr[i]);
+    return s;
+    
+}
+
 
 //gcc List.c -Wall -Wextra
 // Main function
@@ -263,6 +280,9 @@ int main() {
         printf(" Equal\n");
     else 
         printf(" Not equal !\n");
+        
+    printf("%s",toString(first));
+
         
     return 0;
 }    
