@@ -11,12 +11,14 @@ struct List
 };
 // Initialising the list (constructor kinda)
 List* init() {
+    
     List *l = (List *)malloc(sizeof(List));
     l->arr = (int *)malloc(10*sizeof(int));
     l->size = 0;
     l->allocated = 10;
     
     return l;
+    
 }
 // Allocating more space if required space for list surpasses the allocated space
 void allocateSpaceForAppend(List *l) {
@@ -48,7 +50,9 @@ void append(List *l, int element) {
 
 // Returns the length of the List passed as an argument
 int length(List *l) {
+    
     return l->size;
+    
 }
 
 // Creates a deep copy of the provided list
@@ -63,23 +67,28 @@ List* copy(List *l) {
 
 // Returns the number of elements with the specified value
 int count(List *l, int element) {
+    
     int count = 0;
     for(int i=0; i<l->size; i++)
         if(l->arr[i] == element)
             count ++;
     return count;    
+    
 }
 
 // Returns the index of the first element with the specified value ( returns -1 if element not found in the list)
 int findIndex(List *l, int element) {
+    
     for(int i=0; i<l->size; i++)
         if(l->arr[i] == element)
             return i;
     return -1;
+    
 }
 
 // Adds an element at the specified position 
-void insert(List *l, int element, int position){
+void insert(List *l, int element, int position) {
+    
     if (l->allocated <= l->size)
         allocateSpaceForAppend(l);
     int i = (l->size - 1);
@@ -107,11 +116,23 @@ int pop(List *l,int position){
 
 // Add the elements of a list, to the end of the current list
 void extend(List *alist, List *blist) {
+    
     if(alist->size + blist->size > alist->allocated)
         allocateSpaceForExtend(alist, blist->size);
     for(int i=0; i<blist->size; i++) {
         alist->arr[alist->size++] = blist->arr[i];
     }
+    
+}
+
+// Removes the first item with the specified value (returns -1 if element not found)
+void removeElement(List *l, int element) {
+    
+    int pos = findIndex(l, element);
+    if(pos == -1) 
+        return ;
+    pop(l, pos);
+    
 }
 
 
@@ -124,7 +145,6 @@ int main() {
     for(int i=1; i<=20; i++)
         append(first, i);
         
-
     List *first_copy = copy(first);
         
     for(int i=21; i<=25; i++)
@@ -158,6 +178,10 @@ int main() {
     printf(" %d\n",pop(first,20));
     
     extend(first, first_copy);
+    
+    removeElement(first, 200);
+    removeElement(first_copy, 200);
+    
     for(int i=0; i<first->size;i++) 
         printf(" %d", first->arr[i]);
     printf("\n");
