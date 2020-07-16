@@ -166,6 +166,18 @@ int get(List *l, int index) {
     
 }
 
+// Displays or shows the current status of the list
+void show(List *l) {
+    
+    int i = 0;
+    printf("[");
+    for(; i<l->size-1; i++) {
+        printf(" %d,", l->arr[i]);
+    }
+    printf(" %d ]\n", l->arr[i]);
+    
+}
+
 
 
 
@@ -183,13 +195,9 @@ int main() {
     for(int i=21; i<=25; i++)
         append(first_copy, i);
        
-    for(int i=0; i<first->size;i++) 
-        printf(" %d", first->arr[i]);
-    printf("\n");  
+    show(first);  
     
-    for(int i=0; i<first_copy->size;i++) 
-        printf(" %d", first_copy->arr[i]);  
-    printf("\n");        
+    show(first_copy);       
     
     printf(" %d\n", length(first));    
     printf(" %d\n", length(first_copy));
@@ -202,9 +210,7 @@ int main() {
     insert(first, 100, 10);    
     insert(first, 200, 20);  
     
-    for(int i=0; i<first->size;i++) 
-        printf(" %d", first->arr[i]);
-    printf("\n");  
+    show(first);  
     
     printf(" %d\n",pop(first,0));
     printf(" %d\n",pop(first,10));
@@ -216,20 +222,15 @@ int main() {
     if(removeElement(first_copy, 200) == -1)
         printf(" Element not found in the list!\n");
     
-    for(int i=0; i<first->size;i++) 
-        printf(" %d", first->arr[i]);
-    printf("\n");
+    show(first);
     
     reverse(first);
-    
-    for(int i=0; i<first->size;i++) 
-        printf(" %d", first->arr[i]);
-    printf("\n");
+    show(first);
     
     printf(" %d\n", sum(first)); 
     printf(" %d\n", get(first, 100)); 
     
-        
+    show(first);    
     return 0;
 }    
 
