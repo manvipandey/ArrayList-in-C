@@ -27,7 +27,7 @@ void allocateSpaceForAppend(List *l) {
     
 }
 
-// Allocating large spaces when more than one element is appended to the list
+// Allocating large spaces when more than one element is appended to the list (To avoid repeated checking for availability of space while extending a list)
 void allocateSpaceForExtend(List *l, int offset) {
     
     int new_size = (l->size) + offset;
@@ -105,8 +105,17 @@ int pop(List *l,int position){
     return returnElement;
 }
 
+// Add the elements of a list, to the end of the current list
+void extend(List *alist, List *blist) {
+    if(alist->size + blist->size > alist->allocated)
+        allocateSpaceForExtend(alist, blist->size);
+    for(int i=0; i<blist->size; i++) {
+        alist->arr[alist->size++] = blist->arr[i];
+    }
+}
 
 
+//gcc List.c -Wall -Wextra
 // Main function
 int main() {
     
@@ -147,6 +156,12 @@ int main() {
     printf(" %d\n",pop(first,0));
     printf(" %d\n",pop(first,10));
     printf(" %d\n",pop(first,20));
+    
+    extend(first, first_copy);
+    for(int i=0; i<first->size;i++) 
+        printf(" %d", first->arr[i]);
+    printf("\n");
+    
         
     return 0;
 }    
