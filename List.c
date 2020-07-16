@@ -126,13 +126,13 @@ void extend(List *alist, List *blist) {
 }
 
 // Removes the first item with the specified value (returns -1 if element not found)
-void removeElement(List *l, int element) {
+int removeElement(List *l, int element) {
     
     int pos = findIndex(l, element);
     if(pos == -1) 
-        return ;
+        return -1;
     pop(l, pos);
-    
+
 }
 
 
@@ -180,7 +180,8 @@ int main() {
     extend(first, first_copy);
     
     removeElement(first, 200);
-    removeElement(first_copy, 200);
+    if(removeElement(first_copy, 200) == -1)
+        printf(" Element not found in the list!\n");
     
     for(int i=0; i<first->size;i++) 
         printf(" %d", first->arr[i]);
