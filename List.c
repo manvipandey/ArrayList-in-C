@@ -115,7 +115,7 @@ int pop(List *l,int position){
     return returnElement;
 }
 
-// Add the elements of a list, to the end of the current list
+// Add the elements of the list passed as second argument to the end of the list passed as first argument
 void extend(List *alist, List *blist) {
     
     if(alist->size + blist->size > alist->allocated)
@@ -239,6 +239,17 @@ List* replace(List *l, int oldValue, int newValue, int count) {
     
 }
 
+// Returns a list with sequence of number starting from given lower limit and increaments by step , and stops before the upper limit
+List* range(int lowerLimit, int upperLimit, int step) {
+    
+    List *l = init();
+    for(int i=lowerLimit; i<upperLimit; i+=step) {
+        append(l, i);
+    } 
+    return l;
+    
+}
+
 
 //gcc List.c -Wall -Wextra
 // Main function
@@ -312,6 +323,12 @@ int main() {
     show(first);
     
     show(replace(first, 1, 0, 2));
+    
+    printf(" %d %d\n", first->size, first->allocated);
+    
+    extend(first_copy, range(0, 10, 2));
+    
+    show(first_copy);
         
     return 0;
 }    
