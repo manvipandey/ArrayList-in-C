@@ -219,6 +219,26 @@ char* toString(List *l) {
     
 }
 
+// Sets the index provided with the given value in the list
+void set(List *l, int index, int newValue) {
+    
+    l->arr[index] = newValue;
+    
+}
+
+// Returns the list where the old value is replaced by new value upto the given count; If the old value is not found it returns the original list
+List* replace(List *l, int oldValue, int newValue, int count) {
+    
+    for(int i=0;count>0 && i<l->size; i++) {
+        if (l->arr[i] == oldValue) {
+            l->arr[i] = newValue;
+            count --;
+        }
+    }
+    return l;
+    
+}
+
 
 //gcc List.c -Wall -Wextra
 // Main function
@@ -281,8 +301,17 @@ int main() {
     else 
         printf(" Not equal !\n");
         
-    printf("%s",toString(first));
-
+    printf(" %s\n",toString(first));
+    
+    if(get(first, 100) == NULL)
+        printf(" Index not found !\n");
+    printf(" %d\n",get(first, 15));
+    
+    set(first, 15, 1);
+    
+    show(first);
+    
+    show(replace(first, 1, 0, 2));
         
     return 0;
 }    
