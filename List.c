@@ -239,13 +239,24 @@ List* replace(List *l, int oldValue, int newValue, int count) {
     
 }
 
-// Returns a list with sequence of number starting from given lower limit and increaments by step , and stops before the upper limit
+// Returns a list with sequence of numbers starting from given lower limit and increaments by step, and stops before the upper limit
 List* range(int lowerLimit, int upperLimit, int step) {
     
     List *l = init();
     for(int i=lowerLimit; i<upperLimit; i+=step) {
         append(l, i);
     } 
+    return l;
+    
+}
+
+// Returns a copy of the list with the sequence of numbers from the lower index, increamenting by step, and stops before upper index
+List* slice(List *alist, int lowerIndex, int upperIndex, int step) {
+    
+    List *l = init();
+    for(int i=lowerIndex; i<upperIndex; i+=step) {
+        append(l, alist->arr[i]);
+    }
     return l;
     
 }
@@ -324,11 +335,11 @@ int main() {
     
     show(replace(first, 1, 0, 2));
     
-    printf(" %d %d\n", first->size, first->allocated);
-    
     extend(first_copy, range(0, 10, 2));
     
     show(first_copy);
+    
+    show(slice(first_copy, 25, length(first_copy), 1));
         
     return 0;
 }    
