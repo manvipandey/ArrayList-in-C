@@ -135,6 +135,18 @@ int removeElement(List *l, int element) {
 
 }
 
+// Reverses the order of the list
+void reverse(List *l) {
+    
+    int limit = (l->size / 2) - 1;
+    for(int i=0; i<=limit; i++) {
+        int temp = l->arr[i];
+        l->arr[i] = l->arr[l->size - (1 + i)];
+        l->arr[l->size - (1 + i)] = temp;
+    }
+    
+}
+
 
 //gcc List.c -Wall -Wextra
 // Main function
@@ -182,6 +194,12 @@ int main() {
     removeElement(first, 200);
     if(removeElement(first_copy, 200) == -1)
         printf(" Element not found in the list!\n");
+    
+    for(int i=0; i<first->size;i++) 
+        printf(" %d", first->arr[i]);
+    printf("\n");
+    
+    reverse(first);
     
     for(int i=0; i<first->size;i++) 
         printf(" %d", first->arr[i]);
