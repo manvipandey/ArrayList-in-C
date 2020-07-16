@@ -161,6 +161,7 @@ int sum(List *l ) {
 
 // Returns the value at the given index in the list (returns NULL if list index out of limit)
 int get(List *l, int index) {
+    
     if(index > l->size-1)
         return NULL;
     return l->arr[index];
@@ -179,7 +180,7 @@ void show(List *l) {
     
 }
 
-// Return TRUE if element is found in the list; otherwise returns FALSE (Linear search)
+// Returns true if element is found in the list; otherwise returns false (Linear search)
 bool search(List *l, int element) {
     
     for(int i=0; i<l->size; i++) {
@@ -187,10 +188,20 @@ bool search(List *l, int element) {
             return true;
     }
     return false;
+    
 } 
 
-
-
+// Returns true if the given two lists are equal
+bool isEqual(List *alist, List *blist) {
+    if(alist->size == blist->size) {
+        for(int i=0; i<alist->size; i++) {
+            if(alist->arr[i] != blist->arr[i])
+                return false;
+        }
+        return true;
+    }
+    return false;
+} 
 
 //gcc List.c -Wall -Wextra
 // Main function
@@ -243,10 +254,15 @@ int main() {
     
     show(first);    
     
-    if(search(first, 200))
-        printf("Element found !");
+    if(search(first, 100))
+        printf(" Element found !\n");
     else
-        printf("Element not found !");
+        printf(" Element not found !\n");
+        
+    if(isEqual(first, first_copy))
+        printf(" Equal\n");
+    else 
+        printf(" Not equal !\n");
         
     return 0;
 }    
