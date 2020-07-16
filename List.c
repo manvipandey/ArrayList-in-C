@@ -147,6 +147,27 @@ void reverse(List *l) {
     
 }
 
+// Returns the sum of all the elements present in the list
+int sum(List *l ) {
+    
+    int sumOfElements = 0;
+    for(int i=0; i<l->size; i++)
+        sumOfElements += l->arr[i];
+        
+    return sumOfElements;
+    
+}
+
+// Returns the value at the given index in the list (returns NULL if list index out of limit)
+int get(List *l, int index) {
+    if(index > l->size-1)
+        return NULL;
+    return l->arr[index];
+    
+}
+
+
+
 
 //gcc List.c -Wall -Wextra
 // Main function
@@ -204,6 +225,9 @@ int main() {
     for(int i=0; i<first->size;i++) 
         printf(" %d", first->arr[i]);
     printf("\n");
+    
+    printf(" %d\n", sum(first)); 
+    printf(" %d\n", get(first, 100)); 
     
         
     return 0;
