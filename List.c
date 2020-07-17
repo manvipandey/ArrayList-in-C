@@ -171,12 +171,20 @@ int get(List *l, int index) {
 // Displays or shows the current status of the list
 void show(List *l) {
     
-    int i = 0;
-    printf("[");
-    for(; i<l->size-1; i++) {
-        printf(" %d,", l->arr[i]);
+    if(l->size == 0) {
+        printf("[]\n");
+        return;
     }
-    printf(" %d ]\n", l->arr[i]);
+    printf("[");
+    for(int i=0; ; i++) {
+        if(i<l->size-1)
+            printf(" %d,", l->arr[i]);
+        else {
+            printf(" %d ]\n", l->arr[i]);
+            break;
+        }
+    }
+    
     
 }
 
@@ -207,14 +215,23 @@ bool isEqual(List *alist, List *blist) {
 
 // Returns a string of all the elements present in the current list
 char* toString(List *l) {
+    if(l->size == 0) {
+        char *s = "[]\n";
+        return s;
+    }
     
     char *s = (char *)malloc((l->size*2+15)*10*sizeof(char)); 
-    int index = 0, i = 0;
+    int index = 0; 
     index += sprintf(&s[index],"[");
-    for(; i<l->size-1; i++) {
-        index += sprintf(&s[index], " %d,", l->arr[i]);
+    for(int i=0; ; i++) {
+        if(i<l->size-1)
+            index += sprintf(&s[index], " %d,", l->arr[i]);
+        else {
+            index += sprintf(&s[index], " %d ]", l->arr[i]);
+            break;
+        }
     }
-    index += sprintf(&s[index], " %d ]", l->arr[i]);
+    
     return s;
     
 }
@@ -258,6 +275,18 @@ List* slice(List *alist, int lowerIndex, int upperIndex, int step) {
         append(l, alist->arr[i]);
     }
     return l;
+    
+}
+
+//
+List* clear(List *alist) {
+    
+    free(alist->arr);
+    alist->arr = (int *)malloc(0*sizeof(int));
+    alist->size = 0;
+    alist->allocated = 0;
+    
+    return alist;
     
 }
 
@@ -340,6 +369,12 @@ int main() {
     show(first_copy);
     
     show(slice(first_copy, 25, length(first_copy), 1));
+    
+    show(clear(first));
+    
+    printf("%d %d\n", first->size, first->allocated);
+    
+    printf("%s\n", toString(first));
         
     return 0;
 }    
