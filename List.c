@@ -14,9 +14,9 @@ struct List
 List* init() {
     
     List *l = (List *)malloc(sizeof(List));
-    l->arr = (int *)malloc(10*sizeof(int));
-    l->size = 0;
-    l->allocated = 10; 
+    l->allocated = 10;
+    l->arr = (int *)malloc(l->allocated*sizeof(int));
+    l->size = 0; 
     
     return l;
     
@@ -93,9 +93,17 @@ void insert(List *l, int element, int position) {
     if (l->allocated <= l->size)
         allocateSpaceForAppend(l);
     int i = (l->size - 1);
-    while (i != position) {
+    if( position < 0) {
+        while(i-l->size != position) {
+            l->arr[i+1] = l->arr[i]; 
+            i-- ;
+        }
+    }
+    else {
+        while (i != position) {
         l->arr[i+1] = l->arr[i]; 
         i-- ;
+        }
     }
     l->size += 1;
     l->arr[i+1] = l->arr[i];
@@ -104,7 +112,8 @@ void insert(List *l, int element, int position) {
 
 // Removes the element at the specified position
 int pop(List *l,int position){
-    
+    if(position < 0)
+        position = l->size + position; 
     int returnElement = l->arr[position];
     int i = position+1;
     while (i < l->size) {
@@ -164,6 +173,8 @@ int get(List *l, int index) {
     
     if(index > l->size-1)
         return NULL;
+    if(index < 0)
+        index = l->size + index;
     return l->arr[index];
     
 }
@@ -219,7 +230,6 @@ char* toString(List *l) {
         char *s = "[]\n";
         return s;
     }
-    
     char *s = (char *)malloc((l->size*2+15)*10*sizeof(char)); 
     int index = 0; 
     index += sprintf(&s[index],"[");
@@ -231,14 +241,14 @@ char* toString(List *l) {
             break;
         }
     }
-    
     return s;
     
 }
 
 // Sets the index provided with the given value in the list
 void set(List *l, int index, int newValue) {
-    
+    if(index < 0)
+        index = l->size + index;
     l->arr[index] = newValue;
     
 }
@@ -259,10 +269,24 @@ List* replace(List *l, int oldValue, int newValue, int count) {
 // Returns a list with sequence of numbers starting from given lower limit and increaments by step, and stops before the upper limit
 List* range(int lowerLimit, int upperLimit, int step) {
     
+    if( (lowerLimit >= upperLimit && step > 0) || (lowerLimit <= upperLimit && step < 0) ) {
+        List *l = (List *)malloc(sizeof(List));
+        l->allocated = 0;
+        l->arr = (int *)malloc(0*sizeof(int));
+        l->size = 0;
+        return l;
+    }
     List *l = init();
-    for(int i=lowerLimit; i<upperLimit; i+=step) {
-        append(l, i);
-    } 
+    if(lowerLimit < upperLimit) {
+        for(int i=lowerLimit; i<upperLimit; i+=step) {
+            append(l, i);
+        } 
+    }
+    else if (lowerLimit > upperLimit) {
+        for(int i=lowerLimit; i>upperLimit; i+=step) {
+            append(l, i);
+        } 
+    }
     return l;
     
 }
@@ -270,15 +294,34 @@ List* range(int lowerLimit, int upperLimit, int step) {
 // Returns a copy of the list with the sequence of numbers from the lower index, increamenting by step, and stops before upper index
 List* slice(List *alist, int lowerIndex, int upperIndex, int step) {
     
+    if(lowerIndex < 0)
+        lowerIndex = alist->size + lowerIndex;
+    if(upperIndex < 0)
+        upperIndex = alist->size + upperIndex;
+    if( (lowerIndex >= upperIndex && step > 0) || (lowerIndex <= upperIndex && step < 0) ) {
+        List *l = (List *)malloc(sizeof(List));
+        l->allocated = 0;
+        l->arr = (int *)malloc(0*sizeof(int));
+        l->size = 0;
+        return l;
+    }
     List *l = init();
-    for(int i=lowerIndex; i<upperIndex; i+=step) {
-        append(l, alist->arr[i]);
+        
+    if(lowerIndex < upperIndex) {
+        for(int i=lowerIndex; i<upperIndex; i+=step) {
+            append(l, alist->arr[i]);
+        } 
+    }
+    else if (lowerIndex > upperIndex) {
+        for(int i=lowerIndex; i>upperIndex; i+=step) {
+            append(l, alist->arr[i]);
+        } 
     }
     return l;
     
 }
 
-//
+// Removes all the elements of the list and returns an empty list
 List* clear(List *alist) {
     
     free(alist->arr);
@@ -289,6 +332,8 @@ List* clear(List *alist) {
     return alist;
     
 }
+
+
 
 
 //gcc List.c -Wall -Wextra
@@ -368,14 +413,35 @@ int main() {
     
     show(first_copy);
     
-    show(slice(first_copy, 25, length(first_copy), 1));
+    /*show(slice(first_copy, 25, length(first_copy), 1));
     
     show(clear(first));
     
     printf("%d %d\n", first->size, first->allocated);
     
     printf("%s\n", toString(first));
-        
+    
+    show(range(1,11,1));
+    show(range(-11,-1,1));
+    show(range(10,0,-1));
+    show(range(0,-11,-1));
+    show(range(11,5,1));
+    show(range(-5,0,-1));
+    
+    show(slice(first_copy, 11, 5, 1 ));
+    show(slice(first_copy, -5, 0, -1 ));
+    show(slice(first_copy, 1, 11, 1 ));
+    show(slice(first_copy, -11, -1, 1 ));
+    show(slice(first_copy, 10, 0, -1 ));
+    show(slice(first_copy, 0, -11, -1 ));*/
+    printf(" %d\n", first_copy->size);
+    set(first_copy, 25, 26);
+    set(first_copy, -4, 27);
+    pop(first_copy, -3);
+    pop(first_copy, -2);
+    
+    show(first_copy);
+    printf(" %d\n", first_copy->size);   
     return 0;
 }    
 
