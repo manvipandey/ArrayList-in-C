@@ -333,7 +333,36 @@ List* clear(List *alist) {
     
 }
 
+//
+int partition(List *alist, int lowerIndex, int upperIndex) {
+    
+    int pivot = alist->arr[upperIndex];
+    int i = (lowerIndex - 1), temp;
+    for (int j=lowerIndex; j<upperIndex; j++) {
+        if(alist->arr[j] < pivot) {
+            i++;
+            temp = alist->arr[i];
+            alist->arr[i] = alist->arr[j];
+            alist->arr[j] = temp;
+        }
+    }
+    temp = alist->arr[i+1];
+    alist->arr[i+1] = alist->arr[upperIndex];
+    alist->arr[upperIndex] = temp;
+    return (i+1);
+    
+}
 
+//
+void quickSort(List *alist, int lowerIndex, int upperIndex) {
+    
+    if (lowerIndex < upperIndex) {
+        int partitionIndex = partition(alist, lowerIndex, upperIndex);
+        quickSort(alist, lowerIndex, partitionIndex-1);
+        quickSort(alist, partitionIndex+1, upperIndex);
+    }
+    
+}
 
 
 //gcc List.c -Wall -Wextra
@@ -441,7 +470,7 @@ int main() {
     pop(first_copy, -2);
     
     show(first_copy);
-    printf(" %d\n", first_copy->size);   
-    return 0;
+    quickSort(first_copy, 0, length(first_copy)-1);
+    show(first_copy);
 }    
 
