@@ -333,7 +333,9 @@ List* clear(List *alist) {
     
 }
 
-//
+/* This function takes last element as pivot, places the pivot element at it's correct
+   position in sorted array, and places all the elements smaller than the pivot to left
+   of pivot and all greater elements to right of pivot */
 int partition(List *alist, int lowerIndex, int upperIndex) {
     
     int pivot = alist->arr[upperIndex];
@@ -353,14 +355,32 @@ int partition(List *alist, int lowerIndex, int upperIndex) {
     
 }
 
-//
-void quickSort(List *alist, int lowerIndex, int upperIndex) {
+//The main function that implements quick sort
+void sort(List *alist, int lowerIndex, int upperIndex) {
     
     if (lowerIndex < upperIndex) {
         int partitionIndex = partition(alist, lowerIndex, upperIndex);
-        quickSort(alist, lowerIndex, partitionIndex-1);
-        quickSort(alist, partitionIndex+1, upperIndex);
+        sort(alist, lowerIndex, partitionIndex-1);
+        sort(alist, partitionIndex+1, upperIndex);
     }
+    
+}
+
+bool bSearch(List *l, int element) {
+     
+    sort(l, 0, (l->size)-1);
+    int startIndex = 0, endIndex = length(l)-1, mid;
+    while(startIndex <= endIndex) {
+        mid = (startIndex + endIndex)/2;
+        if (l->arr[mid] > element)
+            endIndex = mid-1;
+        else if(l->arr[mid] < element)
+            startIndex = mid + 1;
+        else
+            return true;
+    }
+    return false;
+    
     
 }
 
@@ -470,7 +490,18 @@ int main() {
     pop(first_copy, -2);
     
     show(first_copy);
-    quickSort(first_copy, 0, length(first_copy)-1);
+    sort(first_copy, 0, length(first_copy)-1);
     show(first_copy);
+    if(bSearch(first_copy, 22))
+        printf("True\n");
+    else 
+        printf("False\n");
+    if(bSearch(first_copy, 30))
+        printf("True\n");
+    else 
+        printf("False\n");
+    
+    return 0;   
+    
 }    
 
