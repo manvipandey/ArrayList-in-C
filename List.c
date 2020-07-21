@@ -143,7 +143,7 @@ int removeElement(List *l, int element) {
     int pos = findIndex(l, element);
     if(pos == -1) 
         return -1;
-    pop(l, pos);
+     return pop(l, pos);
 
 }
 
@@ -368,6 +368,7 @@ void sort(List *alist, int lowerIndex, int upperIndex) {
     
 }
 
+// Binary search
 bool bSearch(List *l, int element) {
      
     sort(l, 0, (l->size)-1);
@@ -385,6 +386,7 @@ bool bSearch(List *l, int element) {
 
 }
 
+// Returns a list containing the values passed as variable length argument (argCount gives the number of values passed)
 List* fromValues(int argCount, ...) {
     
     va_list varList;
@@ -397,9 +399,6 @@ List* fromValues(int argCount, ...) {
     return l;
     
 }
-    
-}
-
 
 //gcc List.c -Wall -Wextra
 // Main function
@@ -478,7 +477,7 @@ int main() {
     
     show(first_copy);
     
-    /*show(slice(first_copy, 25, length(first_copy), 1));
+    show(slice(first_copy, 25, length(first_copy), 1));
     
     show(clear(first));
     
@@ -498,7 +497,7 @@ int main() {
     show(slice(first_copy, 1, 11, 1 ));
     show(slice(first_copy, -11, -1, 1 ));
     show(slice(first_copy, 10, 0, -1 ));
-    show(slice(first_copy, 0, -11, -1 ));*/
+    show(slice(first_copy, 0, -11, -1 ));
     printf(" %d\n", first_copy->size);
     set(first_copy, 25, 26);
     set(first_copy, -4, 27);
@@ -522,4 +521,9 @@ int main() {
     return 0;   
     
 }    
+    
+
+
+
+
 
