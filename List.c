@@ -1,6 +1,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdbool.h>
+# include <stdarg.h>
 
 typedef struct List List;
 typedef struct List* ListPtr;
@@ -21,6 +22,7 @@ List* init() {
     return l;
     
 }
+
 // Allocating more space if required space for list surpasses the allocated space
 void allocateSpaceForAppend(List *l) {
     
@@ -380,7 +382,21 @@ bool bSearch(List *l, int element) {
             return true;
     }
     return false;
+
+}
+
+List* fromValues(int argCount, ...) {
     
+    va_list varList;
+    List* l = init();
+    va_start(varList, argCount);
+    for(int i=0; i < argCount; i++) {
+        append(l, va_arg(varList,int));
+    }
+    va_end(varList);
+    return l;
+    
+}
     
 }
 
@@ -500,6 +516,8 @@ int main() {
         printf("True\n");
     else 
         printf("False\n");
+    
+    show(fromValues(5,1,2,3,4,5));
     
     return 0;   
     
