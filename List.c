@@ -114,6 +114,7 @@ void insert(List *l, int element, int position) {
 
 // Removes the element at the specified position
 int pop(List *l,int position){
+    
     if(position < 0)
         position = l->size + position; 
     int returnElement = l->arr[position];
@@ -143,7 +144,7 @@ int removeElement(List *l, int element) {
     int pos = findIndex(l, element);
     if(pos == -1) 
         return -1;
-     return pop(l, pos);
+    return pop(l, pos);
 
 }
 
@@ -181,26 +182,6 @@ int get(List *l, int index) {
     
 }
 
-// Displays or shows the current status of the list
-void show(List *l) {
-    
-    if(l->size == 0) {
-        printf("[]\n");
-        return;
-    }
-    printf("[");
-    for(int i=0; ; i++) {
-        if(i<l->size-1)
-            printf(" %d,", l->arr[i]);
-        else {
-            printf(" %d ]\n", l->arr[i]);
-            break;
-        }
-    }
-    
-    
-}
-
 // Returns true if element is found in the list; otherwise returns false (Linear search)
 bool search(List *l, int element) {
     
@@ -228,22 +209,29 @@ bool isEqual(List *alist, List *blist) {
 
 // Returns a string of all the elements present in the current list
 char* toString(List *l) {
+    
     if(l->size == 0) {
-        char *s = "[]\n";
-        return s;
+        return "[]";
     }
     char *s = (char *)malloc((l->size*2+15)*10*sizeof(char)); 
     int index = 0; 
-    index += sprintf(&s[index],"[");
-    for(int i=0; ; i++) {
+    index += sprintf(&s[index],"[%d", l->arr[0]);
+    for(int i=1; ; i++) {
         if(i<l->size-1)
             index += sprintf(&s[index], " %d,", l->arr[i]);
         else {
-            index += sprintf(&s[index], " %d ]", l->arr[i]);
+            index += sprintf(&s[index], " %d]", l->arr[i]);
             break;
         }
     }
     return s;
+    
+}
+
+// Displays or shows the current status of the list
+void show(List *l) {
+    
+    printf("%s\n",toString(l));
     
 }
 
@@ -437,7 +425,7 @@ int main() {
     
     extend(first, first_copy);
     
-    removeElement(first, 200);
+    printf("%d",removeElement(first, 200));
     if(removeElement(first_copy, 200) == -1)
         printf(" Element not found in the list!\n");
     
