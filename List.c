@@ -17,7 +17,7 @@ List* init() {
     List *l = (List *)malloc(sizeof(List));
     l->allocated = 10;
     l->arr = (int *)malloc(l->allocated*sizeof(int));
-    l->size = 0; 
+    l->size = 0;
     
     return l;
     
@@ -175,7 +175,7 @@ int sum(List *l ) {
 int get(List *l, int index) {
     
     if(index > l->size-1)
-        return NULL;
+        return -1;
     if(index < 0)
         index = l->size + index;
     return l->arr[index];
@@ -213,14 +213,14 @@ char* toString(List *l) {
     if(l->size == 0) {
         return "[]";
     }
-    char *s = (char *)malloc((l->size*2+15)*10*sizeof(char)); 
-    int index = 0; 
-    index += sprintf(&s[index],"[%d", l->arr[0]);
-    for(int i=1; ; i++) {
+    char *s = (char *)malloc((l->size*12+1)*sizeof(char));
+    int index = 0;
+    index += sprintf(&s[index],"[");
+    for(int i=0; ; i++) {
         if(i<l->size-1)
-            index += sprintf(&s[index], " %d,", l->arr[i]);
+            index += sprintf(&s[index], "%d, ", l->arr[i]);
         else {
-            index += sprintf(&s[index], " %d]", l->arr[i]);
+            index += sprintf(&s[index], "%d]", l->arr[i]);
             break;
         }
     }
@@ -451,7 +451,7 @@ int main() {
         
     printf(" %s\n",toString(first));
     
-    if(get(first, 100) == NULL)
+    if(get(first, 100) == -1)
         printf(" Index not found !\n");
     printf(" %d\n",get(first, 15));
     
@@ -509,9 +509,3 @@ int main() {
     return 0;   
     
 }    
-    
-
-
-
-
-
