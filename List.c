@@ -5,11 +5,10 @@
 
 typedef struct List List;
 typedef struct List* ListPtr;
-struct List
-{
-   int size;
-   int allocated;
-   int *arr;
+struct List {
+    int size;
+    int allocated;
+    int *arr;
 };
 // Initialising the list (constructor kinda)
 List* init() {
@@ -388,9 +387,19 @@ List* fromValues(int argCount, ...) {
     
 }
 
+// Returns an array with all the elements present in the list passed as an argument 
+int* toArray(List *l) {
+    
+    int *array = (int *)malloc(l->size*sizeof(int));
+    for(int i=0; i<l->size; i++) 
+        array[i] = l->arr[i];
+    return array   
+    
+}
+
 //gcc List.c -Wall -Wextra
 // Main function
-int main() {
+/*int main() {
     
     List *first = init();
     
@@ -508,4 +517,4 @@ int main() {
     
     return 0;   
     
-}    
+}    */
