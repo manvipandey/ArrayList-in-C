@@ -34,9 +34,11 @@ void allocateSpaceForAppend(List *l) {
 // Allocating large spaces when more than one element is appended to the list (To avoid repeated checking for availability of space while extending a list)
 void allocateSpaceForExtend(List *l, int offset) {
     
-    int new_size = (l->size) + offset;
-    l->allocated = new_size;
-    l->arr = (int *)realloc(l->arr, new_size*sizeof(int));
+    if(l->allocated < l->size + offset) {
+        int new_size = (l->size) + offset;
+        l->allocated = new_size;
+        l->arr = (int *)realloc(l->arr, new_size*sizeof(int));
+    }
     
 }
 
@@ -129,11 +131,21 @@ int pop(List *l,int position){
 // Add the elements of the list passed as second argument to the end of the list passed as first argument
 void extend(List *alist, List *blist) {
     
-    if(alist->size + blist->size > alist->allocated)
-        allocateSpaceForExtend(alist, blist->size);
+    allocateSpaceForExtend(alist, blist->size);
     for(int i=0; i<blist->size; i++) {
         alist->arr[alist->size++] = blist->arr[i];
     }
+    
+}
+
+// Returns a list with all the elements in the array passed as an argument
+List* fromArray(int a[], int length) {
+    
+    List *l = init();
+    allocateSpaceForExtend(l, length);
+    for(int i=0; i<length; i++)
+        l->arr[l->size++] = a[i];
+    return l;
     
 }
 
@@ -356,7 +368,7 @@ void sort(List *alist, int lowerIndex, int upperIndex) {
 }
 
 // Binary search
-bool bSearch(List *l, int element) {
+bool binarySearch(List *l, int element) {
      
     sort(l, 0, (l->size)-1);
     int startIndex = 0, endIndex = length(l)-1, mid;
@@ -393,7 +405,7 @@ int* toArray(List *l) {
     int *array = (int *)malloc(l->size*sizeof(int));
     for(int i=0; i<l->size; i++) 
         array[i] = l->arr[i];
-    return array   
+    return array;
     
 }
 
@@ -410,7 +422,7 @@ List* fill(List *l, int count, int value ) {
     
 }
 
-//
+// Trims the allocated space down to the size of the list
 void trimToSize(List *l) {
     
     l->allocated = l->size;
