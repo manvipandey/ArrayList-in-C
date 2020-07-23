@@ -410,6 +410,13 @@ List* fill(List *l, int count, int value ) {
     
 }
 
+//
+void trimToSize(List *l) {
+    
+    l->allocated = l->size;
+    l->arr = realloc(l->arr, l->size*sizeof(int));
+    
+}
 
 //gcc List.c -Wall -Wextra
 // Main function
