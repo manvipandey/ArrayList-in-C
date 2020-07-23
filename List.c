@@ -397,6 +397,20 @@ int* toArray(List *l) {
     
 }
 
+// Apppends the list with 'count' number of 'value' and returns the list
+List* fill(List *l, int count, int value ) {
+    
+    if(l->size + count > l->allocated) 
+        allocateSpaceForExtend(l, count);
+    while(count > 0) {
+        l->arr[l->size++] = value;
+        count--;
+    }
+    return l;
+    
+}
+
+
 //gcc List.c -Wall -Wextra
 // Main function
 /*int main() {
