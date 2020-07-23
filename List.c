@@ -255,7 +255,7 @@ void set(List *l, int index, int newValue) {
 }
 
 // Returns the list where the old value is replaced by new value upto the given count; If the old value is not found it returns the original list
-List* replace(List *l, int oldValue, int newValue, int count) {
+void replace(List *l, int oldValue, int newValue, int count) {
     
     for(int i=0;count>0 && i<l->size; i++) {
         if (l->arr[i] == oldValue) {
@@ -263,7 +263,6 @@ List* replace(List *l, int oldValue, int newValue, int count) {
             count --;
         }
     }
-    return l;
     
 }
 
