@@ -34,11 +34,9 @@ void allocateSpaceForAppend(List *l) {
 // Allocating large spaces when more than one element is appended to the list (To avoid repeated checking for availability of space while extending a list)
 void allocateSpaceForExtend(List *l, int offset) {
     
-    if(l->allocated < l->size + offset) {
-        int new_size = (l->size) + offset;
-        l->allocated = new_size;
-        l->arr = (int *)realloc(l->arr, new_size*sizeof(int));
-    }
+    int new_size = (l->size) + offset;
+    l->allocated = new_size;
+    l->arr = (int *)realloc(l->arr, new_size*sizeof(int));
     
 }
 
@@ -57,6 +55,13 @@ int length(List *l) {
     
     return l->size;
     
+}
+
+//Returns the current allocated space to the list
+int capacity(List *l) {
+      
+    return l->allocated;
+      
 }
 
 // Creates a deep copy of the provided list
@@ -131,21 +136,11 @@ int pop(List *l,int position){
 // Add the elements of the list passed as second argument to the end of the list passed as first argument
 void extend(List *alist, List *blist) {
     
-    allocateSpaceForExtend(alist, blist->size);
+    if(alist->size + blist->size > alist->allocated)
+        allocateSpaceForExtend(alist, blist->size);
     for(int i=0; i<blist->size; i++) {
         alist->arr[alist->size++] = blist->arr[i];
     }
-    
-}
-
-// Returns a list with all the elements in the array passed as an argument
-List* fromArray(int a[], int length) {
-    
-    List *l = init();
-    allocateSpaceForExtend(l, length);
-    for(int i=0; i<length; i++)
-        l->arr[l->size++] = a[i];
-    return l;
     
 }
 
@@ -255,7 +250,7 @@ void set(List *l, int index, int newValue) {
 }
 
 // Returns the list where the old value is replaced by new value upto the given count; If the old value is not found it returns the original list
-void replace(List *l, int oldValue, int newValue, int count) {
+List* replace(List *l, int oldValue, int newValue, int count) {
     
     for(int i=0;count>0 && i<l->size; i++) {
         if (l->arr[i] == oldValue) {
@@ -263,6 +258,7 @@ void replace(List *l, int oldValue, int newValue, int count) {
             count --;
         }
     }
+    return l;
     
 }
 
@@ -367,7 +363,7 @@ void sort(List *alist, int lowerIndex, int upperIndex) {
 }
 
 // Binary search
-bool binarySearch(List *l, int element) {
+bool bSearch(List *l, int element) {
      
     sort(l, 0, (l->size)-1);
     int startIndex = 0, endIndex = length(l)-1, mid;
@@ -398,35 +394,5 @@ List* fromValues(int argCount, ...) {
     
 }
 
-// Returns an array with all the elements present in the list passed as an argument 
-int* toArray(List *l) {
-    
-    int *array = (int *)malloc(l->size*sizeof(int));
-    for(int i=0; i<l->size; i++) 
-        array[i] = l->arr[i];
-    return array;
-    
-}
-
-// Apppends the list with 'count' number of 'value' and returns the list
-List* fill(List *l, int count, int value ) {
-    
-    if(l->size + count > l->allocated) 
-        allocateSpaceForExtend(l, count);
-    while(count > 0) {
-        l->arr[l->size++] = value;
-        count--;
-    }
-    return l;
-    
-}
-
-// Trims the allocated space down to the size of the list
-void trimToSize(List *l) {
-    
-    l->allocated = l->size;
-    l->arr = realloc(l->arr, l->size*sizeof(int));
-    
-}
 
 
